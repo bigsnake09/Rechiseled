@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -46,14 +47,12 @@ public class RechiseledForgeHooks {
         if (!(blockState.getBlock().asItem() instanceof BlockItem blockItem))
             return;
 
-        if(recipe.contains(blockItem.getDefaultInstance())){
+        if(!level.isClientSide && recipe.contains(blockItem.getDefaultInstance())){
             if(!(storedStack.getItem() instanceof BlockItem stackBlockItem) || blockItem == stackBlockItem)
                 return;
 
-            level.setBlock(pos, stackBlockItem.getBlock().defaultBlockState(), 1);
-
-            if(!level.isClientSide)
-                level.playSound(null, pos, SoundEvents.CALCITE_HIT, SoundSource.BLOCKS);
+            level.setBlock(pos, stackBlockItem.getBlock().defaultBlockState(), Block.UPDATE_ALL);
+            level.playSound(null, pos, SoundEvents.CALCITE_HIT, SoundSource.BLOCKS);
         }
     }
 }
