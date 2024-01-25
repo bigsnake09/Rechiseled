@@ -92,19 +92,7 @@ public class ChiselItem extends BaseItem {
         if(chiselStack.getItem() == blockItem) // we already have the item and don't need to do anything
             return;
 
-        NonNullList<ItemStack> playerItems = player.getInventory().items; // try to grab matching item first
-        for(int i = 0; i < playerItems.size(); ++i){
-            ItemStack inventoryStack = playerItems.get(i);
-            Item item = inventoryStack.getItem();
-            if(item != blockItem)
-                continue;
-
-            pickChiselItemFromInventory(chisel, chiselStack, inventoryStack, blockItem, player.getInventory(), i);
-
-            return;
-        }
-
-        if(!chiselStack.isEmpty() && recipeForBlock.contains(chiselStack)){ // no stack in inventory, try setting the stack already in the chisel
+        if(!chiselStack.isEmpty() && recipeForBlock.contains(chiselStack)){ // try setting the stack already in the chisel
             int indexOf = recipeForBlock.indexOf(defaultInstance);
             if(indexOf > -1){
                 ItemStack newStack = new ItemStack(blockItem);
@@ -116,7 +104,19 @@ public class ChiselItem extends BaseItem {
 
         }
 
-        for(int i = 0; i < playerItems.size(); ++i){ // grab an item which is part of the same recipe
+        NonNullList<ItemStack> playerItems = player.getInventory().items; // try to grab matching item in inventory
+        for(int i = 0; i < playerItems.size(); ++i){
+            ItemStack inventoryStack = playerItems.get(i);
+            Item item = inventoryStack.getItem();
+            if(item != blockItem)
+                continue;
+
+            pickChiselItemFromInventory(chisel, chiselStack, inventoryStack, blockItem, player.getInventory(), i);
+
+            return;
+        }
+
+        for(int i = 0; i < playerItems.size(); ++i){ // try to grab an item which is part of the same recipe
             ItemStack inventoryStack = playerItems.get(i);
             if (!recipeForBlock.contains(inventoryStack))
                 continue;
