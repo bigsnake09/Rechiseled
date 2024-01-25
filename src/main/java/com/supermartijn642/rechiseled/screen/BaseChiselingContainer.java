@@ -36,8 +36,16 @@ public abstract class BaseChiselingContainer extends BaseContainer {
             @Override
             public void setStackInSlot(int slot, @Nonnull ItemStack stack){
                 if(slot == 0){
+
+                    boolean dirtyUi = BaseChiselingContainer.this.getCurrentStack().isEmpty();
+
                     BaseChiselingContainer.this.setCurrentStack(stack);
                     BaseChiselingContainer.this.updateRecipe();
+
+                    if(dirtyUi){
+                        if(BaseChiselingContainer.this.onUiDirtied != null)
+                            BaseChiselingContainer.this.onUiDirtied.run();
+                    }
                 }
             }
 
