@@ -30,6 +30,9 @@ public class ChiselContainer extends BaseChiselingContainer {
         ItemStack chisel = this.player.getItemInHand(this.hand);
         if(chisel.getItem() == Rechiseled.chisel)
             ChiselItem.setStoredStack(chisel, stack);
+
+        if(this.onUiDirtied != null)
+            this.onUiDirtied.run();
     }
 
     @Override
