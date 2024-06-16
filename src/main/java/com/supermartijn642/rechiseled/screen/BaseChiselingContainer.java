@@ -24,6 +24,7 @@ public abstract class BaseChiselingContainer extends BaseContainer {
     public ChiselingEntry currentEntry = null;
     public boolean connecting = false;
     public Runnable onUiDirtied;
+    public boolean initialDirtiedUi;
 
     public BaseChiselingContainer(BaseContainerType<?> type, Player player){
         super(type, player);
@@ -36,8 +37,8 @@ public abstract class BaseChiselingContainer extends BaseContainer {
             @Override
             public void setStackInSlot(int slot, @Nonnull ItemStack stack){
                 if(slot == 0){
-
-                    boolean dirtyUi = BaseChiselingContainer.this.getCurrentStack().isEmpty();
+                    boolean dirtyUi = BaseChiselingContainer.this.getCurrentStack().isEmpty() || !BaseChiselingContainer.this.initialDirtiedUi;
+                    BaseChiselingContainer.this.initialDirtiedUi = true;
 
                     BaseChiselingContainer.this.setCurrentStack(stack);
                     BaseChiselingContainer.this.updateRecipe();
